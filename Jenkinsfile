@@ -11,7 +11,7 @@ pipeline{
                 script{
                     withSonarQubeEnv(credentialsId: 'sonar-token') {
                             sh 'chmod +x gradlew'
-                            sh './gradlew sonarqube -Dsonar.projectName=CICD -Dsonar.projectKey=CICD'
+                            sh './gradlew sonarqube'
                     }
                 }
             }
