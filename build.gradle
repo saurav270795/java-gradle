@@ -28,8 +28,7 @@ test {
 
 sonarqube {
     properties {
-        property 'sonar.host.url', 'http://34.57.71.43:9000'
-        property 'sonar.login', 'squ_9732cbc1be65b49502ed5074f3296a0e853d3875'
-        property 'sonar.projectKey','CICD-Gradle'
+        property 'sonar.host.url', ''
+        property 'sonar.login', '*******'
     }
 }
