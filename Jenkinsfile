@@ -24,10 +24,10 @@ pipeline{
         stage("docker build and push"){
             steps{
                 script{
-                    withCredentials([string(credentialsId: 'docker-pass', variable: 'docker-pass')]) {
+                    withCredentials([string(credentialsId: 'docker-pass', variable: 'docker-p')]) {
                         sh '''
                          docker build -t 34.122.89.158:8083/saurav:${VERSION} .
-                         docker login -u admin -p $docker-pass 34.122.89.158:8083 
+                         docker login -u admin -p $docker-p 34.122.89.158:8083 
                          docker push 34.122.89.158:8083/saurav:${VERSION}     
                          docker rmi 34.122.89.158:8083/saurav:${VERSION}        
                         '''
