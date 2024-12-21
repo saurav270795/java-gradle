@@ -20,6 +20,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+               allowPrivilegeEscalation: false
+               readOnlyRootFilesystem: true
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
