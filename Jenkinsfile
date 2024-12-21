@@ -39,7 +39,7 @@ pipeline{
             steps{
                 script{
                  dir('kubernetes/') {
-                      withEnv(['PATH=${env.PATH}:/usr/local/bin:/root/.local/share/helm/plugins']){
+                      withEnv(['PATH=${env.PATH}:/usr/local/bin']){
                        sh 'helm datree test myapp/'
                 }    
               }
