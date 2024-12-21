@@ -3,7 +3,7 @@ pipeline{
        environment{
         VERSION = "${env.BUILD_ID}"
         NEXUS_REPO_URL = 'http://34.122.89.158:8081/repository/helm-hosted/'
-        HELM_CHART_PATH = './myapp-0.1.0.tgz' // Path to the packaged Helm chart
+        HELM_CHART_PATH = '/home/ubuntu/java-gradle/kubernetes/myapp-0.1.0.tgz' // Path to the packaged Helm chart
        }
     stages{
         stage("sonar quality check"){
