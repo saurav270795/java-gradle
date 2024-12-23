@@ -65,9 +65,7 @@ pipeline{
             steps{
                 script{
                        dir('kubernetes/') {
-                        sh '
-                         helm upgrade --install --set image.repository="34.122.89.158:8083/saurav" --set image.tag="${VERSION}" javaapp myapp/ 
-                        '
+                        sh 'helm upgrade --install --set image.repository="34.122.89.158:8083/saurav" --set image.tag="${VERSION}" javaapp myapp/ '
                     }
                 }
             }
