@@ -15,11 +15,13 @@ spec:
         {{- include "myapp.selectorLabels" . | nindent 8 }}
     spec:
       imagePullSecrets:
-          - name: registry-secret
+        - name: registry-secret
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh"]
+          args: ["-c","sh /usr/local/tomcat/bin/startup.sh;while true; do echo hello; sleep 10;done"]
           securityContext:
                allowPrivilegeEscalation: false
                readOnlyRootFilesystem: true
