@@ -3,20 +3,10 @@ replicaCount: 2
 image:
   repository: IMAGE_NAME
   # This sets the pull policy for images.
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: IMAGE_TAG
 
 service:
   type: NodePort
   port: 8080
-
-
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
