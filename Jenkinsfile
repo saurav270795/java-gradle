@@ -2,8 +2,6 @@ pipeline{
     agent any
        environment{
         VERSION = "${env.BUILD_ID}"
-        NEXUS_REPO_URL = 'http://34.122.89.158:8081/repository/helm-hosted/'
-        HELM_CHART_PATH = '/home/ubuntu/java-gradle/kubernetes/myapp-0.1.0.tgz' // Path to the packaged Helm chart
        }
     stages{
         stage("sonar quality check"){
@@ -54,7 +52,9 @@ pipeline{
                     withCredentials([string(credentialsId: 'docker-pass', variable: 'docker_p')]) {
                         dir('kubernetes/') {
                         sh '''
-                        curl -u admin:$docker_p --upload-file ${HELM_CHART_PATH} ${NEXUS_REPO_URL}
+                        helmversion=$(helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
+                        tar -czvf myapp-${helmversion}.tgz myapp/
+                        curl -u admin:$docker_p http://34.122.89.158:8081/repository/helm-hosted/  --upload-file myapp-${helmversion}.tgz -v
                         '''
                        }
                     }
