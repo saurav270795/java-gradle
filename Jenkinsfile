@@ -29,7 +29,7 @@ pipeline{
                          docker build -t 34.122.89.158:8083/saurav:${VERSION} .
                          echo $docker_p | docker login -u admin --password-stdin 34.122.89.158:8083 
                          docker push 34.122.89.158:8083/saurav:${VERSION}     
-                         docker rmi 34.122.89.158:8083/saurav:${VERSION}        
+                         // docker rmi 34.122.89.158:8083/saurav:${VERSION}        
                         '''
                   }
                }
