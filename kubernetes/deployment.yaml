@@ -18,7 +18,7 @@ spec:
         - name: registry-secret      
       containers:
         - name: myapp
-          image: "34.122.89.158:8083/saurav:95"
+          image: "34.122.89.158:8083/saurav:96"
           imagePullPolicy: Always
           command: ["/bin/sh"]
           args: ["-c","sh /usr/local/tomcat/bin/startup.sh;while true; do echo hello; sleep 10;done"]
