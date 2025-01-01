@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+  labels:
+    app : java 
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app : java
+  template:
+    metadata:
+      labels:
+        app : java
+    spec:
+      imagePullSecrets:
+        - name: registry-secret      
+      containers:
+        - name: myapp
+          image: "34.122.89.158:8083/saurav:95"
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args: ["-c","sh /usr/local/tomcat/bin/startup.sh;while true; do echo hello; sleep 10;done"]
+          securityContext:
+               allowPrivilegeEscalation: false
+               readOnlyRootFilesystem: true
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 10
+          resources:
+            requests:
+              memory: 0.5Gi
+              cpu: 0.5
+            limits:
+              memory: 1Gi 
+              cpu: 1 
