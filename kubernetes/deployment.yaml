@@ -14,7 +14,7 @@ spec:
       labels:
         app : java
     spec:
-      imagePullSecrets:
+      pullImageSecrets:
         - name: registry-secret      
       containers:
         - name: myapp
