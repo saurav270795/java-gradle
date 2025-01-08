@@ -40,7 +40,7 @@ pipeline{
                 script{
                  dir('kubernetes/') {
                    
-                       sh 'helm datree test --skip="Ensure each container has a configured liveness probe" --skip="Ensure each container has a configured readiness probe" myapp/'
+                       sh 'helm datree test myapp/'
                   
               }
             }
