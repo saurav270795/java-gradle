@@ -24,7 +24,7 @@ spec:
           args: ["-c","sh /usr/local/tomcat/bin/startup.sh;while true; do echo hello; sleep 10; done"]
           securityContext:
                allowPrivilegeEscalation: false
-               readOnlyRootFilesystem: true
+               readOnlyRootFilesystem: false
           ports:
             - name: http
               containerPort: 8080
