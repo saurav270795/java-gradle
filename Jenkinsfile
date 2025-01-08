@@ -16,10 +16,10 @@ pipeline{
                     def qg = waitForQualityGate()
                      if (qg.status != 'OK') {
                         error "Pipeline aborted due to quality gate failure: ${qg.status}"
-                   }    
+                    }    
+                  }
                 }
-             }
-          }    
+           }    
        }
         stage("docker build and push"){
             steps{
@@ -29,23 +29,47 @@ pipeline{
                          docker build -t 34.122.89.158:8083/saurav:${VERSION} .
                          echo $docker_p | docker login -u admin --password-stdin 34.122.89.158:8083 
                          docker push 34.122.89.158:8083/saurav:${VERSION}     
+                         docker rmi 34.122.89.158:8083/saurav:${VERSION}        
                         '''
-                  }
-               }
+                    }
+                }
             } 
-         }
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    dir('kubernetes') {
-                        sh """
-                            kubectl apply -f deployment.yaml
-                            kubectl apply -f service.yaml
-                        """
-               }
-             }
-          }
         }
+        stage("helm config check using datree"){
+            steps{
+                script{
+                 dir('kubernetes/') {
+                   
+                       sh 'helm datree test myapp/'
+                  
+              }
+            }
+          } 
+        }
+       stage("push helm charts to nexus helm repo"){
+            steps{
+                script{
+                    withCredentials([string(credentialsId: 'docker-pass', variable: 'docker_p')]) {
+                        dir('kubernetes/') {
+                        sh '''
+                        helmversion=$(helm show chart myapp | grep version | cut -d: -f 2 | tr -d ' ')
+                        tar -czvf myapp-${helmversion}.tgz myapp/
+                        curl -u admin:$docker_p http://34.122.89.158:8081/repository/helm-hosted/  --upload-file myapp-${helmversion}.tgz -v
+                        '''
+                       }
+                    }
+                }
+            }
+         }
+        stage("deploying helm charts to K8cluster"){
+            steps{
+                script{
+                       dir('kubernetes/') {
+                        sh 'helm upgrade --install --set image.repository="34.122.89.158:8083/saurav" --set image.tag="${VERSION}" --kubeconfig /var/lib/jenkins/.kube/config javaapp myapp/ --debug'
+                   } 
+                }
+            }
+         }  
       }
     post {
 		always {
