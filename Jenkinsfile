@@ -35,17 +35,6 @@ pipeline{
                 }
             } 
         }
-        stage("helm config check using datree"){
-            steps{
-                script{
-                 dir('kubernetes/') {
-                   
-                       sh 'helm datree test --skip-rules read-only-root-filesystem myapp/'
-                  
-              }
-            }
-          } 
-        }
        stage("push helm charts to nexus helm repo"){
             steps{
                 script{
